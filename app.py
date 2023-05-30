@@ -1,7 +1,6 @@
-import streamlit as st
 import pandas as pd
 import seaborn as sns
-
+import streamlit as st
 # Load the Iris dataset
 iris = sns.load_dataset('iris')
 
