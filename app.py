@@ -1,51 +1,27 @@
 import streamlit as st
-import streamlit as st
+import pandas as pd
+import seaborn as sns
 
-def display_question(question, options):
-    st.write(question)
-    for i, option in enumerate(options):
-        st.radio(str(i+1), option)
-
-def calculate_score(answers, user_answers):
-    score = 0
-    for i, ans in enumerate(answers):
-        if ans == user_answers[i]:
-            score += 1
-    return score
-
-# Define the quiz questions and options
-questions = [
-    "What is the capital of France?",
-    "Which planet is known as the Red Planet?",
-    "What is the chemical symbol for gold?",
-    "What is the largest organ in the human body?",
-    "Which country is famous for its kangaroos?"
-]
-
-options = [
-    ["Paris", "Berlin", "London", "Rome"],
-    ["Mars", "Jupiter", "Venus", "Mercury"],
-    ["Au", "Ag", "Cu", "Fe"],
-    ["Heart", "Brain", "Lungs", "Skin"],
-    ["Australia", "Brazil", "India", "Canada"]
-]
-
-correct_answers = ["1", "1", "1", "4", "1"]
+# Load the Iris dataset
+iris = sns.load_dataset('iris')
 
 # Streamlit app
 def main():
-    st.title("Simple Quiz App")
-    st.write("Select the correct option for each question.")
+    st.title("Simple Data Visualization App")
 
-    user_answers = []
-    for i in range(len(questions)):
-        st.header(f"Question {i+1}")
-        display_question(questions[i], options[i])
-        user_answer = st.radio("Your answer:", options=[str(j+1) for j in range(len(options[i]))])
-        user_answers.append(user_answer)
+    # Sidebar selection
+    st.sidebar.title("Select Features")
+    x_axis = st.sidebar.selectbox("X-axis", iris.columns[:-1])
+    y_axis = st.sidebar.selectbox("Y-axis", iris.columns[:-1])
 
-    score = calculate_score(correct_answers, user_answers)
-    st.success(f"Your score: {score}/{len(questions)}")
+    # Scatter plot
+    st.subheader("Scatter Plot")
+    sns.scatterplot(data=iris, x=x_axis, y=y_axis, hue='species')
+    st.pyplot()
+
+    # Data table
+    st.subheader("Data Table")
+    st.write(iris)
 
 if __name__ == "__main__":
     main()
